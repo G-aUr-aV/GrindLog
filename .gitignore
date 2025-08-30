@@ -1,0 +1,18 @@
+# Dependencies
+/node_modules
+/client/node_modules
+/server/node_modules
+
+# Environment variables
+.env
+client/.env
+server/.env
+
+# Logs
+*.log
+
+# Build output
+/client/build
+
+# Other
+/server/.last_run_daily_digest
