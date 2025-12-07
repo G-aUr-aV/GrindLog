@@ -16,3 +16,4 @@ server/.env
 
 # Other
 /server/.last_run_daily_digest
+/server/backups/

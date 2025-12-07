@@ -1,4 +1,5 @@
 const Problem = require('../models/Problem');
+const { triggerBackup } = require('../services/backupService');
 
 const addProblem = async (req, res) => {
   try {
@@ -21,6 +22,11 @@ const addProblem = async (req, res) => {
 
     await problem.save();
 
+    // Trigger backup asynchronously on next tick
+    setImmediate(() => {
+      triggerBackup().catch(err => console.error('Backup trigger failed:', err));
+    });
+
     res.status(201).json({
       success: true,
       message: 'Problem added successfully',
@@ -38,9 +44,9 @@ const addProblem = async (req, res) => {
 const getProblems = async (req, res) => {
   try {
     const { platform } = req.query;
-    
+
     const filter = platform && platform !== 'all' ? { platform } : {};
-    
+
     const problems = await Problem.find(filter)
       .sort({ timestamp: -1 })
       .lean();
@@ -71,15 +77,20 @@ const getProblems = async (req, res) => {
 const deleteProblem = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const problem = await Problem.findByIdAndDelete(id);
-    
+
     if (!problem) {
       return res.status(404).json({
         success: false,
         message: 'Problem not found'
       });
     }
+
+    // Trigger backup asynchronously on next tick
+    setImmediate(() => {
+      triggerBackup().catch(err => console.error('Backup trigger failed:', err));
+    });
 
     res.json({
       success: true,
