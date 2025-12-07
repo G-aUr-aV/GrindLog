@@ -626,7 +626,22 @@ const HomePage: React.FC = () => {
       }
     }
 
-    return problems;
+    const last7DaysProblems: GroupedProblems = {};
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 6);
+
+    const dateRange = eachDayOfInterval({ start: sevenDaysAgo, end: today });
+
+    dateRange.reverse().forEach(date => {
+      const problemsForDate = getProblemsForDate(date);
+      if (problemsForDate.length > 0) {
+        const dateKey = format(date, 'yyyy-MM-dd');
+        last7DaysProblems[dateKey] = problemsForDate;
+      }
+    });
+
+    return last7DaysProblems;
   };
 
   const getWeeklyProgress = () => {

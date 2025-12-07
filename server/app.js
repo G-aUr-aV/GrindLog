@@ -25,8 +25,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/grindLog'
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch((error) => console.error('MongoDB connection error:', error));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
 // Routes
 app.use('/api/problems', problemRoutes);
