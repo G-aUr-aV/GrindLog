@@ -117,15 +117,15 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                 hour12: true
             });
 
-            return { 
-                relativeTime, 
-                dateOnly, 
+            return {
+                relativeTime,
+                dateOnly,
                 timeOnly
             };
         } catch (error) {
             console.error('Error formatting time:', error);
-            return { 
-                relativeTime: 'Unknown', 
+            return {
+                relativeTime: 'Unknown',
                 dateOnly: 'Unknown date',
                 timeOnly: 'Unknown time'
             };
@@ -143,6 +143,8 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                         return TerminalIcon;
                     case 'CSES':
                         return ComputerIcon;
+                    case 'CodeChef':
+                        return TerminalIcon;
                     default:
                         return CodeIcon;
                 }
@@ -173,6 +175,8 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                     return '#1976D2';
                 case 'CSES':
                     return '#4CAF50';
+                case 'CodeChef':
+                    return '#D97706';
                 default:
                     return '#757575';
             }
@@ -230,10 +234,11 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                                     label={problem?.platform || 'Unknown'}
                                     clickable={true}
                                     onClick={() => {
-                                        const platformUrls = {
+                                        const platformUrls: { [key: string]: string } = {
                                             'LeetCode': 'https://leetcode.com',
                                             'CSES': 'https://cses.fi',
                                             'Codeforces': 'https://codeforces.com',
+                                            'CodeChef': 'https://codechef.com',
                                         };
 
                                         const url = platformUrls[problem?.platform] || `https://google.com/search?q=${problem?.platform}`;

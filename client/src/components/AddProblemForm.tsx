@@ -54,15 +54,15 @@ const AddProblemForm: React.FC<AddProblemFormProps> = ({ open, onClose, onSubmit
 
         try {
             console.log('Form submitting with data:', formData); // Debug log
-            
+
             await onSubmit({
                 platform: formData.platform as ProblemPlatform,
                 title: formData.title,
                 url: formData.url
             });
-            
+
             console.log('Form submission successful'); // Debug log
-            
+
             // Reset form
             setFormData({ platform: '', title: '', url: '' });
             onClose();
@@ -204,6 +204,9 @@ const AddProblemForm: React.FC<AddProblemFormProps> = ({ open, onClose, onSubmit
                                     </MenuItem>
                                     <MenuItem value="CSES" sx={{ color: '#fff', '&:hover': { background: 'rgba(76, 175, 80, 0.2)' } }}>
                                         🟢 CSES
+                                    </MenuItem>
+                                    <MenuItem value="CodeChef" sx={{ color: '#fff', '&:hover': { background: 'rgba(217, 119, 6, 0.2)' } }}>
+                                        🍳 CodeChef
                                     </MenuItem>
                                 </Select>
                             </FormControl>

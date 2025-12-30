@@ -4,7 +4,7 @@ const problemSchema = new mongoose.Schema({
   platform: {
     type: String,
     required: true,
-    enum: ['LeetCode', 'Codeforces', 'CSES']
+    enum: ['LeetCode', 'Codeforces', 'CSES', 'CodeChef']
   },
   title: {
     type: String,

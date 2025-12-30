@@ -8,6 +8,7 @@ interface PlatformCounts {
   LeetCode: number;
   Codeforces: number;
   CSES: number;
+  CodeChef: number;
 }
 
 interface PlatformFilterProps {
@@ -34,6 +35,7 @@ const PlatformFilter: React.FC<PlatformFilterProps> = ({
     { value: 'LeetCode', label: 'LeetCode', color: '#FFA726', icon: '🔢' },
     { value: 'Codeforces', label: 'Codeforces', color: '#42A5F5', icon: '🏆' },
     { value: 'CSES', label: 'CSES', color: '#66BB6A', icon: '🎯' },
+    { value: 'CodeChef', label: 'CodeChef', color: '#D97706', icon: '🍳' },
   ];
 
   return (
@@ -64,7 +66,7 @@ const PlatformFilter: React.FC<PlatformFilterProps> = ({
         >
           <FilterIcon />
         </Fab>
-        
+
         <Collapse in={filterExpanded} timeout={300}>
           <Paper
             sx={{

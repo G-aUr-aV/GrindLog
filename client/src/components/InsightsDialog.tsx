@@ -56,7 +56,7 @@ interface InsightsDialogProps {
   open: boolean;
   onClose: () => void;
   allProblems: GroupedProblems;
-  calculateProblemCounts: () => { all: number; LeetCode: number; Codeforces: number; CSES: number; };
+  calculateProblemCounts: () => { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; };
   calculateStreak: () => number;
 }
 
@@ -101,7 +101,7 @@ interface InsightsData {
   avgPerActiveDay: number;
   mostProductiveDay: ProductiveDay | null;
   bestWeek: BestWeek | null;
-  platformBreakdown: { all: number; LeetCode: number; Codeforces: number; CSES: number; };
+  platformBreakdown: { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; };
   recentActivity: Array<{ date: string; count: number; isToday: boolean }>;
   achievements: Achievement[];
   recommendations: Recommendation[];
@@ -118,7 +118,7 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
     const problemCounts = calculateProblemCounts();
     const streak = calculateStreak();
     const dates = Object.keys(allProblems).sort();
-    
+
     if (dates.length === 0) {
       return {
         totalProblems: 0,
@@ -148,7 +148,7 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
     // Most productive day
     let mostProductiveDay: ProductiveDay | null = null;
     let maxProblems = 0;
-    
+
     for (const date of dates) {
       const count = allProblems[date].length;
       if (count > maxProblems) {
@@ -161,12 +161,12 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
     let bestWeek: BestWeek | null = null;
     let maxWeekProblems = 0;
     const weeks = new Map<string, { start: Date; count: number }>();
-    
+
     for (const date of dates) {
       const d = new Date(date);
       const weekStart = startOfWeek(d, { weekStartsOn: 1 });
       const weekKey = format(weekStart, 'yyyy-MM-dd');
-      
+
       if (!weeks.has(weekKey)) {
         weeks.set(weekKey, { start: weekStart, count: 0 });
       }
@@ -184,12 +184,12 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
     // Recent activity (last 30 days) - Create complete 30-day array
     const thirtyDaysAgo = subDays(new Date(), 29); // Include today, so 30 days total
     const recentActivity: Array<{ date: string; count: number; isToday: boolean }> = [];
-    
+
     for (let i = 0; i < 30; i++) {
       const currentDate = subDays(new Date(), 29 - i);
       const dateKey = format(currentDate, 'yyyy-MM-dd');
       const count = allProblems[dateKey]?.length || 0;
-      
+
       recentActivity.push({
         date: dateKey,
         count,
@@ -199,148 +199,148 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
 
     // Achievements
     const achievements: Achievement[] = [];
-    
+
     if (totalProblems >= 1) {
-      achievements.push({ 
-        title: 'First Steps', 
-        description: 'Solved your first problem!', 
-        icon: '🎯', 
-        color: '#4ECDC4' 
+      achievements.push({
+        title: 'First Steps',
+        description: 'Solved your first problem!',
+        icon: '🎯',
+        color: '#4ECDC4'
       });
     }
     if (totalProblems >= 10) {
-      achievements.push({ 
-        title: 'Getting Started', 
-        description: 'Solved 10 problems!', 
-        icon: '🚀', 
-        color: '#667eea' 
+      achievements.push({
+        title: 'Getting Started',
+        description: 'Solved 10 problems!',
+        icon: '🚀',
+        color: '#667eea'
       });
     }
     if (totalProblems >= 50) {
-      achievements.push({ 
-        title: 'Problem Solver', 
-        description: 'Solved 50 problems!', 
-        icon: '💪', 
-        color: '#764ba2' 
+      achievements.push({
+        title: 'Problem Solver',
+        description: 'Solved 50 problems!',
+        icon: '💪',
+        color: '#764ba2'
       });
     }
     if (totalProblems >= 100) {
-      achievements.push({ 
-        title: 'Century Club', 
-        description: 'Solved 100 problems!', 
-        icon: '🏆', 
-        color: '#FF6B6B' 
+      achievements.push({
+        title: 'Century Club',
+        description: 'Solved 100 problems!',
+        icon: '🏆',
+        color: '#FF6B6B'
       });
     }
     if (totalProblems >= 500) {
-      achievements.push({ 
-        title: 'Elite Coder', 
-        description: 'Solved 500 problems!', 
-        icon: '👑', 
-        color: '#FFD700' 
+      achievements.push({
+        title: 'Elite Coder',
+        description: 'Solved 500 problems!',
+        icon: '👑',
+        color: '#FFD700'
       });
     }
-    
+
     if (streak >= 3) {
-      achievements.push({ 
-        title: 'On Fire', 
-        description: `${streak} day streak!`, 
-        icon: '🔥', 
-        color: '#FF8E53' 
+      achievements.push({
+        title: 'On Fire',
+        description: `${streak} day streak!`,
+        icon: '🔥',
+        color: '#FF8E53'
       });
     }
     if (streak >= 7) {
-      achievements.push({ 
-        title: 'Week Warrior', 
-        description: 'Solved problems for 7 consecutive days!', 
-        icon: '⚡', 
-        color: '#FF6B6B' 
+      achievements.push({
+        title: 'Week Warrior',
+        description: 'Solved problems for 7 consecutive days!',
+        icon: '⚡',
+        color: '#FF6B6B'
       });
     }
     if (streak >= 30) {
-      achievements.push({ 
-        title: 'Month Master', 
-        description: 'Solved problems for 30 consecutive days!', 
-        icon: '🌟', 
-        color: '#FFD700' 
+      achievements.push({
+        title: 'Month Master',
+        description: 'Solved problems for 30 consecutive days!',
+        icon: '🌟',
+        color: '#FFD700'
       });
     }
-    
+
     if (activeDays >= 30) {
-      achievements.push({ 
-        title: 'Consistent Coder', 
-        description: 'Active for 30 different days!', 
-        icon: '📅', 
-        color: '#4ECDC4' 
+      achievements.push({
+        title: 'Consistent Coder',
+        description: 'Active for 30 different days!',
+        icon: '📅',
+        color: '#4ECDC4'
       });
     }
     if (activeDays >= 100) {
-      achievements.push({ 
-        title: 'Dedication', 
-        description: 'Active for 100 different days!', 
-        icon: '💎', 
-        color: '#667eea' 
+      achievements.push({
+        title: 'Dedication',
+        description: 'Active for 100 different days!',
+        icon: '💎',
+        color: '#667eea'
       });
     }
-    
+
     // Power Day achievement - Fixed the type issue
     if (mostProductiveDay && mostProductiveDay.count >= 5) {
-      achievements.push({ 
-        title: 'Power Day', 
-        description: `Solved ${mostProductiveDay.count} problems in one day!`, 
-        icon: '⚡', 
-        color: '#FF8E53' 
+      achievements.push({
+        title: 'Power Day',
+        description: `Solved ${mostProductiveDay.count} problems in one day!`,
+        icon: '⚡',
+        color: '#FF8E53'
       });
     }
 
     // Recommendations
     const recommendations: Recommendation[] = [];
-    
+
     if (avgPerActiveDay < 2) {
-      recommendations.push({ 
-        title: 'Increase Daily Volume', 
-        description: 'Try to solve at least 2 problems per active day.', 
-        icon: '💪', 
-        priority: 'medium' 
+      recommendations.push({
+        title: 'Increase Daily Volume',
+        description: 'Try to solve at least 2 problems per active day.',
+        icon: '💪',
+        priority: 'medium'
       });
     }
-    
+
     if (streak === 0) {
-      recommendations.push({ 
-        title: 'Start a Streak', 
-        description: 'Begin solving problems daily to build momentum.', 
-        icon: '🔥', 
-        priority: 'high' 
+      recommendations.push({
+        title: 'Start a Streak',
+        description: 'Begin solving problems daily to build momentum.',
+        icon: '🔥',
+        priority: 'high'
       });
     } else if (streak < 7) {
-      recommendations.push({ 
-        title: 'Build Your Streak', 
-        description: 'Try to maintain a 7-day streak for better consistency.', 
-        icon: '⚡', 
-        priority: 'medium' 
+      recommendations.push({
+        title: 'Build Your Streak',
+        description: 'Try to maintain a 7-day streak for better consistency.',
+        icon: '⚡',
+        priority: 'medium'
       });
     }
-    
+
     const recentWeekCount = recentActivity.filter(day => new Date(day.date) >= subWeeks(new Date(), 1)).length;
     if (recentWeekCount < 3) {
-      recommendations.push({ 
-        title: 'Stay Active', 
-        description: 'Aim for at least 3 active days per week.', 
-        icon: '💪', 
-        priority: 'high' 
+      recommendations.push({
+        title: 'Stay Active',
+        description: 'Aim for at least 3 active days per week.',
+        icon: '💪',
+        priority: 'high'
       });
     }
-    
+
     const platformCounts = Object.entries(problemCounts).filter(([key]) => key !== 'all');
-    const dominantPlatform = platformCounts.reduce((max, [platform, count]) => 
+    const dominantPlatform = platformCounts.reduce((max, [platform, count]) =>
       count > max.count ? { platform, count } : max, { platform: '', count: 0 });
-    
+
     if (dominantPlatform.count / totalProblems > 0.8 && totalProblems > 10) {
-      recommendations.push({ 
-        title: 'Diversify Platforms', 
-        description: `Try solving problems on other platforms besides ${dominantPlatform.platform}.`, 
-        icon: '🌐', 
-        priority: 'low' 
+      recommendations.push({
+        title: 'Diversify Platforms',
+        description: `Try solving problems on other platforms besides ${dominantPlatform.platform}.`,
+        icon: '🌐',
+        priority: 'low'
       });
     }
 
@@ -436,17 +436,15 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
       sx={{
         p: 2,
         background: 'rgba(255, 255, 255, 0.03)',
-        border: `1px solid ${
-          recommendation.priority === 'high' ? 'rgba(255, 107, 107, 0.3)' :
+        border: `1px solid ${recommendation.priority === 'high' ? 'rgba(255, 107, 107, 0.3)' :
           recommendation.priority === 'medium' ? 'rgba(255, 193, 7, 0.3)' :
-          'rgba(76, 236, 196, 0.3)'
-        }`,
+            'rgba(76, 236, 196, 0.3)'
+          }`,
         borderRadius: 2,
-        borderLeft: `4px solid ${
-          recommendation.priority === 'high' ? '#FF6B6B' :
+        borderLeft: `4px solid ${recommendation.priority === 'high' ? '#FF6B6B' :
           recommendation.priority === 'medium' ? '#FFC107' :
-          '#4ECDC4'
-        }`,
+            '#4ECDC4'
+          }`,
         flex: 1,
         minWidth: '300px',
       }}
@@ -516,14 +514,14 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
 
       <DialogContent sx={{ p: 4, pt: 5 }}>
         {/* Main Stats */}
-        <Box sx={{mt: 4, mb: 4 }}>
+        <Box sx={{ mt: 4, mb: 4 }}>
           <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold', mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
             <TrendingUpIcon sx={{ color: '#4ECDC4' }} />
             Overall Statistics
           </Typography>
-          <Box sx={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
+          <Box sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: 3,
             '& > *': {
               flexBasis: { xs: '100%', sm: 'calc(50% - 12px)', md: 'calc(25% - 18px)' }
@@ -573,6 +571,7 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
                   LeetCode: '#FFA726',
                   Codeforces: '#42A5F5',
                   CSES: '#66BB6A',
+                  CodeChef: '#D97706',
                 };
                 return (
                   <Paper
@@ -622,9 +621,9 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
               <TrophyIcon sx={{ color: '#FFD700' }} />
               Highlights
             </Typography>
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
+            <Box sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
               gap: 3,
               '& > *': {
                 flexBasis: { xs: '100%', md: 'calc(50% - 12px)' }
@@ -680,9 +679,9 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
                 {insights.achievements.length}
               </Box>
             </Typography>
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
+            <Box sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
               gap: 2,
               '& > *': {
                 flexBasis: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(33.333% - 11px)' }
@@ -702,9 +701,9 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
               <TimelineIcon sx={{ color: '#4ECDC4' }} />
               Recommendations
             </Typography>
-            <Box sx={{ 
-              display: 'flex', 
-              flexWrap: 'wrap', 
+            <Box sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
               gap: 2,
               '& > *': {
                 flexBasis: { xs: '100%', sm: 'calc(50% - 8px)' }
@@ -733,7 +732,7 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
               }}
             >
               {/* Activity Grid */}
-              <Box sx={{ 
+              <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(14px, 1fr))',
                 gap: 1,
@@ -748,12 +747,12 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
                       width: 14,
                       height: 14,
                       borderRadius: 1,
-                      background: day.count === 0 
-                        ? 'rgba(255, 255, 255, 0.1)' 
-                        : day.count <= 2 
-                          ? 'rgba(76, 236, 196, 0.4)' 
-                          : day.count <= 4 
-                            ? 'rgba(76, 236, 196, 0.7)' 
+                      background: day.count === 0
+                        ? 'rgba(255, 255, 255, 0.1)'
+                        : day.count <= 2
+                          ? 'rgba(76, 236, 196, 0.4)'
+                          : day.count <= 4
+                            ? 'rgba(76, 236, 196, 0.7)'
                             : '#4ECDC4',
                       border: day.isToday ? '2px solid #FF6B6B' : 'none',
                       transition: 'all 0.3s ease',

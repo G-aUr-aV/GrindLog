@@ -8,6 +8,7 @@ interface ProblemCounts {
   LeetCode: number;
   Codeforces: number;
   CSES: number;
+  CodeChef: number;
 }
 
 interface UseProblemsReturn {
@@ -37,13 +38,13 @@ export const useProblems = (): UseProblemsReturn => {
       if (dateKey.includes('-') && dateKey.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return dateKey; // Already in correct format
       }
-      
+
       const date = new Date(dateKey);
       if (isNaN(date.getTime())) {
         console.warn('Invalid date key:', dateKey);
         return format(new Date(), 'yyyy-MM-dd');
       }
-      
+
       return format(date, 'yyyy-MM-dd');
     } catch (err) {
       console.warn('Error converting date key:', dateKey, err);
@@ -79,14 +80,14 @@ export const useProblems = (): UseProblemsReturn => {
     return problemsList.reduce((acc, problem) => {
       if (!problem) return acc;
 
-      const dateKey = problem.timestamp 
-        ? problem.timestamp.split('T')[0] 
+      const dateKey = problem.timestamp
+        ? problem.timestamp.split('T')[0]
         : format(new Date(), 'yyyy-MM-dd');
-      
+
       if (!acc[dateKey]) {
         acc[dateKey] = [];
       }
-      
+
       acc[dateKey].push(problem);
       return acc;
     }, {} as GroupedProblems);
@@ -99,12 +100,12 @@ export const useProblems = (): UseProblemsReturn => {
     }
 
     const filtered: GroupedProblems = {};
-    
+
     Object.entries(allProblems).forEach(([date, problemsForDate]) => {
       const filteredForDate = problemsForDate.filter(
         problem => problem.platform === selectedPlatform
       );
-      
+
       if (filteredForDate.length > 0) {
         filtered[date] = filteredForDate;
       }
@@ -115,11 +116,11 @@ export const useProblems = (): UseProblemsReturn => {
 
   // Memoized problem counts (as function)
   const calculateProblemCounts = useCallback((): ProblemCounts => {
-    const counts: ProblemCounts = { all: 0, LeetCode: 0, Codeforces: 0, CSES: 0 };
-    
+    const counts: ProblemCounts = { all: 0, LeetCode: 0, Codeforces: 0, CSES: 0, CodeChef: 0 };
+
     Object.values(allProblems).flat().forEach(problem => {
       if (!problem) return;
-      
+
       counts.all++;
       if (problem.platform && problem.platform in counts) {
         counts[problem.platform as keyof ProblemCounts]++;
@@ -139,8 +140,8 @@ export const useProblems = (): UseProblemsReturn => {
     const yesterdayString = format(new Date(today.getTime() - 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
 
     // Check if we have activity today or yesterday
-    let currentDate = dates.includes(todayString) ? todayString : 
-                     dates.includes(yesterdayString) ? yesterdayString : null;
+    let currentDate = dates.includes(todayString) ? todayString :
+      dates.includes(yesterdayString) ? yesterdayString : null;
 
     if (!currentDate) return 0;
 
@@ -151,7 +152,7 @@ export const useProblems = (): UseProblemsReturn => {
     while (true) {
       const dateString = format(dateToCheck, 'yyyy-MM-dd');
       if (!dates.includes(dateString)) break;
-      
+
       streak++;
       dateToCheck = new Date(dateToCheck.getTime() - 24 * 60 * 60 * 1000);
     }
@@ -164,12 +165,12 @@ export const useProblems = (): UseProblemsReturn => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await problemsApi.getProblems();
-      
+
       // Handle the specific API response structure
       let normalizedProblems: GroupedProblems = {};
-      
+
       if (response && typeof response === 'object') {
         if ('success' in response && 'data' in response && response.success) {
           // Handle your API format: { success: true, data: { "Sat Jun 21 2025": [...], ... } }
@@ -190,9 +191,9 @@ export const useProblems = (): UseProblemsReturn => {
         console.warn('Unexpected response format:', response);
         normalizedProblems = {};
       }
-      
+
       setAllProblems(normalizedProblems);
-      
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch problems. Please try again.';
       setError(errorMessage);
@@ -203,28 +204,28 @@ export const useProblems = (): UseProblemsReturn => {
   }, [normalizeProblemsData, groupProblemsByDate]);
 
   // Add new problem
-  const addProblem = useCallback(async (problemData: { 
-    platform: ProblemPlatform; 
-    title: string; 
-    url: string; 
+  const addProblem = useCallback(async (problemData: {
+    platform: ProblemPlatform;
+    title: string;
+    url: string;
   }): Promise<Problem> => {
     try {
       const problemWithTimestamp = {
         ...problemData,
         timestamp: new Date().toISOString()
       };
-      
+
       const newProblem = await problemsApi.addProblem(problemWithTimestamp);
-      
-      const dateKey = newProblem.timestamp 
-        ? newProblem.timestamp.split('T')[0] 
+
+      const dateKey = newProblem.timestamp
+        ? newProblem.timestamp.split('T')[0]
         : format(new Date(), 'yyyy-MM-dd');
-      
+
       setAllProblems(prev => ({
         ...prev,
         [dateKey]: [...(prev[dateKey] || []), newProblem]
       }));
-      
+
       return newProblem;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to add problem';
@@ -237,20 +238,20 @@ export const useProblems = (): UseProblemsReturn => {
   const deleteProblem = useCallback(async (problemId: string): Promise<void> => {
     try {
       await problemsApi.deleteProblem(problemId);
-      
+
       setAllProblems(prev => {
         const updated = { ...prev };
-        
+
         Object.keys(updated).forEach(date => {
           updated[date] = updated[date].filter(p => p._id !== problemId);
           if (updated[date].length === 0) {
             delete updated[date];
           }
         });
-        
+
         return updated;
       });
-      
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to delete problem';
       setError(errorMessage);
