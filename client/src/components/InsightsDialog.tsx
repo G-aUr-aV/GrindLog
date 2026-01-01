@@ -56,7 +56,7 @@ interface InsightsDialogProps {
   open: boolean;
   onClose: () => void;
   allProblems: GroupedProblems;
-  calculateProblemCounts: () => { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; };
+  calculateProblemCounts: () => { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; Toph: number; AtCoder: number; };
   calculateStreak: () => number;
 }
 
@@ -101,7 +101,7 @@ interface InsightsData {
   avgPerActiveDay: number;
   mostProductiveDay: ProductiveDay | null;
   bestWeek: BestWeek | null;
-  platformBreakdown: { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; };
+  platformBreakdown: { all: number; LeetCode: number; Codeforces: number; CSES: number; CodeChef: number; Toph: number; AtCoder: number; };
   recentActivity: Array<{ date: string; count: number; isToday: boolean }>;
   achievements: Achievement[];
   recommendations: Recommendation[];
@@ -572,6 +572,8 @@ const InsightsDialog: React.FC<InsightsDialogProps> = ({
                   Codeforces: '#42A5F5',
                   CSES: '#66BB6A',
                   CodeChef: '#D97706',
+                  Toph: '#9C27B0',
+                  AtCoder: '#607D8B',
                 };
                 return (
                   <Paper

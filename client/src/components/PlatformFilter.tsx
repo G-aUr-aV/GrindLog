@@ -9,6 +9,8 @@ interface PlatformCounts {
   Codeforces: number;
   CSES: number;
   CodeChef: number;
+  Toph: number;
+  AtCoder: number;
 }
 
 interface PlatformFilterProps {
@@ -36,6 +38,8 @@ const PlatformFilter: React.FC<PlatformFilterProps> = ({
     { value: 'Codeforces', label: 'Codeforces', color: '#42A5F5', icon: '🏆' },
     { value: 'CSES', label: 'CSES', color: '#66BB6A', icon: '🎯' },
     { value: 'CodeChef', label: 'CodeChef', color: '#D97706', icon: '🍳' },
+    { value: 'Toph', label: 'Toph', color: '#9C27B0', icon: '🟣' },
+    { value: 'AtCoder', label: 'AtCoder', color: '#222222', icon: '⚫' },
   ];
 
   return (

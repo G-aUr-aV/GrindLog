@@ -145,6 +145,10 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                         return ComputerIcon;
                     case 'CodeChef':
                         return TerminalIcon;
+                    case 'Toph':
+                        return CodeIcon;
+                    case 'AtCoder':
+                        return TerminalIcon;
                     default:
                         return CodeIcon;
                 }
@@ -177,6 +181,10 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                     return '#4CAF50';
                 case 'CodeChef':
                     return '#D97706';
+                case 'Toph':
+                    return '#9C27B0';
+                case 'AtCoder':
+                    return '#607D8B';
                 default:
                     return '#757575';
             }
@@ -239,6 +247,8 @@ const ProblemCard: React.FC<ProblemCardProps> = ({ problem, onDelete }) => {
                                             'CSES': 'https://cses.fi',
                                             'Codeforces': 'https://codeforces.com',
                                             'CodeChef': 'https://codechef.com',
+                                            'Toph': 'https://toph.co',
+                                            'AtCoder': 'https://atcoder.jp',
                                         };
 
                                         const url = platformUrls[problem?.platform] || `https://google.com/search?q=${problem?.platform}`;

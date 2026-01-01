@@ -1,6 +1,6 @@
 export interface Problem {
   _id: string;
-  platform: 'LeetCode' | 'Codeforces' | 'CSES' | 'CodeChef';
+  platform: 'LeetCode' | 'Codeforces' | 'CSES' | 'CodeChef' | 'Toph' | 'AtCoder';
   title: string;
   url: string;
   timestamp: string;
@@ -11,5 +11,5 @@ export interface GroupedProblems {
 }
 
 // Separate types for different use cases
-export type ProblemPlatform = 'LeetCode' | 'Codeforces' | 'CSES' | 'CodeChef';
+export type ProblemPlatform = 'LeetCode' | 'Codeforces' | 'CSES' | 'CodeChef' | 'Toph' | 'AtCoder';
 export type FilterPlatform = 'all' | ProblemPlatform;

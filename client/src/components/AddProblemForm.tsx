@@ -208,6 +208,12 @@ const AddProblemForm: React.FC<AddProblemFormProps> = ({ open, onClose, onSubmit
                                     <MenuItem value="CodeChef" sx={{ color: '#fff', '&:hover': { background: 'rgba(217, 119, 6, 0.2)' } }}>
                                         🍳 CodeChef
                                     </MenuItem>
+                                    <MenuItem value="Toph" sx={{ color: '#fff', '&:hover': { background: 'rgba(156, 39, 176, 0.2)' } }}>
+                                        🟣 Toph
+                                    </MenuItem>
+                                    <MenuItem value="AtCoder" sx={{ color: '#fff', '&:hover': { background: 'rgba(34, 34, 34, 0.2)' } }}>
+                                        ⚫ AtCoder
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </Slide>

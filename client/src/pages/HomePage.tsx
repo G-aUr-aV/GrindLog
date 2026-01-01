@@ -186,6 +186,8 @@ const PLATFORMS = [
   { id: 'Codeforces', name: 'Codeforces', icon: '🔴', color: '#FF6B6B' },
   { id: 'CSES', name: 'CSES', icon: '🔵', color: '#3F51B5' },
   { id: 'CodeChef', name: 'CodeChef', icon: '🍳', color: '#D97706' },
+  { id: 'Toph', name: 'Toph', icon: '🟣', color: '#9C27B0' },
+  { id: 'AtCoder', name: 'AtCoder', icon: '⚫', color: '#222222' },
 ] as const;
 
 const HomePage: React.FC = () => {

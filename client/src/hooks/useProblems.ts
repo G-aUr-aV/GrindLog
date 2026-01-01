@@ -9,6 +9,8 @@ interface ProblemCounts {
   Codeforces: number;
   CSES: number;
   CodeChef: number;
+  Toph: number;
+  AtCoder: number;
 }
 
 interface UseProblemsReturn {
@@ -116,7 +118,7 @@ export const useProblems = (): UseProblemsReturn => {
 
   // Memoized problem counts (as function)
   const calculateProblemCounts = useCallback((): ProblemCounts => {
-    const counts: ProblemCounts = { all: 0, LeetCode: 0, Codeforces: 0, CSES: 0, CodeChef: 0 };
+    const counts: ProblemCounts = { all: 0, LeetCode: 0, Codeforces: 0, CSES: 0, CodeChef: 0, Toph: 0, AtCoder: 0 };
 
     Object.values(allProblems).flat().forEach(problem => {
       if (!problem) return;
